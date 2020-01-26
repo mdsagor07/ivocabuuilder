@@ -85,7 +85,7 @@ public class Dismiss extends AppCompatActivity {
         builder1.setMessage("Enter Your Word.");
         builder1.setCancelable(true);
 
-        textView.setOnClickListener(new View.OnClickListener() {
+        /*textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(),"Hello Javatpoint",Toast.LENGTH_SHORT).show();
@@ -93,7 +93,7 @@ public class Dismiss extends AppCompatActivity {
 
                 startActivity(intent);
             }
-        });
+        });*/
 
         builder1.setPositiveButton(
                 "Yes",
