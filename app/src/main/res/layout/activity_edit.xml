@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    <EditText
+        android:id="@+id/word_edit"
+        android:layout_width="280dp"
+        android:paddingStart="40dp"
+        android:paddingEnd="30dp"
+        android:layout_height="55dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/word"
+        android:hint="Word" />
+
+    <EditText
+        android:id="@+id/meaning_edit"
+        android:layout_width="280dp"
+        android:paddingStart="40dp"
+        android:paddingEnd="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_height="55dp"
+        android:layout_gravity="center"
+        android:background="@drawable/meaning"
+        android:hint="Meaning" />
+
+    <EditText
+        android:id="@+id/explanation_edit"
+        android:layout_width="316dp"
+        android:paddingStart="40dp"
+        android:paddingEnd="30dp"
+        android:layout_height="177dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/explanation"
+        android:hint="Explanation" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="20dp"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/cancel_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorPrimary"
+            android:textColor="#ffffff"
+            android:layout_marginStart="60dp"
+            android:text="cancel"/>
+        <Button
+            android:id="@+id/update_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorPrimary"
+            android:textColor="#ffffff"
+            android:layout_marginStart="60dp"
+            android:text="Updae"/>
+    </LinearLayout>
+
+</LinearLayout>
