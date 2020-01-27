@@ -61,21 +61,22 @@ public class Dismiss extends AppCompatActivity {
 
     }
 
-    private void forSenencDialog(String data) {
+    private void forSenencDialog(String data)
+    {
 
         AlertDialog.Builder builder1 = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AlertDialogCustom));
 
         LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
-        View view = inflater.inflate(R.layout.dismis_dialoge, null);
+        View view = inflater.inflate(R.layout.layout_dialog, null);
 
 
         builder1.setTitle("Enter Word:");
-        wordbar = view.findViewById(R.id.word1);
-        meaningbar = view.findViewById(R.id.meaning2);
-        explabar = view.findViewById(R.id.explanation3);
+        wordbar = view.findViewById(R.id.word);
+        meaningbar = view.findViewById(R.id.meaning);
+        explabar = view.findViewById(R.id.explanation);
 
-       /* textView=view.findViewById(R.id.seemeningid);
-        textView.setVisibility(View.INVISIBLE);*/
+        textView=view.findViewById(R.id.seemeningid);
+        textView.setVisibility(View.INVISIBLE);
 
 
 
@@ -149,6 +150,19 @@ public class Dismiss extends AppCompatActivity {
         wordbar = view.findViewById(R.id.word);
         meaningbar = view.findViewById(R.id.meaning);
         explabar = view.findViewById(R.id.explanation);
+        textView=view.findViewById(R.id.seemeningid);
+
+        textView.setVisibility(View.VISIBLE);
+
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent=new Intent(getApplicationContext(),GoogleTranslate.class);
+
+                startActivity(intent);
+            }
+        });
 
         wordbar.setText(data);
 
