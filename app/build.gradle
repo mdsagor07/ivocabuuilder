@@ -11,6 +11,7 @@ android {
         }
 
 
+
         applicationId "com.swagger.ivocabuilder"
         minSdkVersion 18
         targetSdkVersion 29
@@ -51,5 +52,8 @@ dependencies {
     annotationProcessor "androidx.room:room-compiler:$room_version"
 
     debugImplementation 'com.amitshekhar.android:debug-db:1.0.4'
+
+    implementation 'org.jsoup:jsoup:1.12.1'
+
 
 }

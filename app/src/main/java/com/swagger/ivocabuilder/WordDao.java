@@ -1,8 +1,6 @@
 package com.swagger.ivocabuilder;
 
 
-import android.provider.ContactsContract;
-
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
@@ -12,16 +10,13 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Dao
 public interface WordDao {
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Data data);
 
 

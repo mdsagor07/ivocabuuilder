@@ -1,10 +1,5 @@
 package com.swagger.ivocabuilder;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.ContextThemeWrapper;
-import androidx.lifecycle.ViewModelProviders;
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +9,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.ContextThemeWrapper;
+import androidx.lifecycle.ViewModelProviders;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
+import java.io.IOException;
 import java.util.Date;
 
 public class Dismiss extends AppCompatActivity {
@@ -146,6 +150,7 @@ public class Dismiss extends AppCompatActivity {
         View view = inflater.inflate(R.layout.layout_dialog, null);
 
 
+
         builder1.setTitle("Enter Word:");
         wordbar = view.findViewById(R.id.word);
         meaningbar = view.findViewById(R.id.meaning);
@@ -153,18 +158,36 @@ public class Dismiss extends AppCompatActivity {
         textView=view.findViewById(R.id.seemeningid);
 
         textView.setVisibility(View.VISIBLE);
+        wordbar.setText(data);
 
+       //  for find the meaning from dictionary.com
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Intent intent=new Intent(getApplicationContext(),GoogleTranslate.class);
+                Getmeaning();
+            }
 
-                startActivity(intent);
+            private void Getmeaning() {
+                Document document=null;
+
+                try {
+                    document= Jsoup.connect("https://www.dictionary.com/browse/test?s=t").get();
+
+                    String html="<div value=\"1\" class=\"css-kg6o37 e1q3nk1v3\"><span class=\"one-click-content css-1p89gle e1q3nk1v4\">the means by which the presence, quality, or genuineness of anything is determined; a means of trial.</span></div>";
+                    Document doc = Jsoup.parse(html);
+
+
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
             }
         });
 
-        wordbar.setText(data);
+        //wordbar.setText(data);
 
         builder1.setView(view);
         builder1.setMessage("Enter Your Word.");

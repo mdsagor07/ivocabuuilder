@@ -1,17 +1,11 @@
 package com.swagger.ivocabuilder;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.tabs.TabLayout;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.ContextThemeWrapper;
-import androidx.appcompat.widget.Toolbar;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.viewpager.widget.ViewPager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,7 +15,25 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.ContextThemeWrapper;
+import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.viewpager.widget.ViewPager;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.tabs.TabLayout;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+
+import java.io.IOException;
 import java.util.Date;
+
+import static java.lang.StrictMath.abs;
 
 
 public class HomeActivity extends AppCompatActivity{
@@ -31,6 +43,14 @@ public class HomeActivity extends AppCompatActivity{
    private TabLayout tabLayout;
    private WebView webView;
    private TextView textView;
+   ProgressDialog progressDialog;
+   String meaningFromsite;
+   String text;
+   String text2;
+   String finalmeaning;
+
+    String url= "https://www.dictionary.com/browse/";
+    String urlend="?s=t";
 
    int id=1;
     String word;
@@ -110,10 +130,17 @@ public class HomeActivity extends AppCompatActivity{
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"Hello Javatpoint",Toast.LENGTH_SHORT).show();
-                Intent intent=new Intent(getApplicationContext(), GoogleTranslate.class);
+                Toast.makeText(getApplicationContext(),"running",Toast.LENGTH_SHORT).show();
+                //Intent intent=new Intent(getApplicationContext(), GoogleTranslate.class);
+                //startActivity(intent);
 
-                startActivity(intent);
+                word =wordbar.getText().toString();
+
+                GetMeaning getMeaning;
+                getMeaning = new GetMeaning();
+                getMeaning.execute();
+
+
             }
         });
 
@@ -167,11 +194,76 @@ public class HomeActivity extends AppCompatActivity{
 
     }
 
+    private class GetMeaning extends AsyncTask<Void,Void,Void>{
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog=new ProgressDialog(HomeActivity.this);
+            progressDialog.setTitle("Please wait");
+            progressDialog.setMessage("Find for meaning ");
+            progressDialog.show();
+
+        }
+
+
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            meaningbar.setText(finalmeaning);
+            progressDialog.dismiss();
+
+
+
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        @Override
+        protected Void doInBackground(Void... voids) {
+
+            try {
+                Document document= (Document) Jsoup.connect(url+ word+urlend).get();
+
+
+                Element lll=document.getElementsByClass("one-click-content css-1p89gle e1q3nk1v4").first();
+
+                Element llll=document.getElementsByClass("luna-example italic").first();
+                //meaningFromsite=String.valueOf(lll.text()).trim();
+
+              text=String.valueOf(lll.text());
+               text2=String.valueOf(llll.text());
+
+                int a=text.length();
+                int b=text2.length();
+                int c=abs(a-b);
+                if(a>b)
+                {
+                    finalmeaning=String.valueOf(lll.text()).substring(0,c);
+                }
+
+
+                finalmeaning=String.valueOf(lll.text()).trim();
+
+
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
         if (item.getItemId() == R.id.all_users) {
+
 
 
         }
