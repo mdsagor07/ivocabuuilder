@@ -125,7 +125,7 @@ public class HomeActivity extends AppCompatActivity{
 
         //wordbar.setText(text);
 
-        wordtext=wordbar.getText().toString();
+
 
         builder1.setView(view);
         builder1.setMessage("Enter Your Word.");
@@ -262,7 +262,6 @@ public class HomeActivity extends AppCompatActivity{
 
             try {
                 Document document= (Document) Jsoup.connect(urlforsentence+ word).get();
-
 
                 Element lll=document.getElementsByClass("sentence component").first();
 
