@@ -31,6 +31,7 @@ public class Dismiss extends AppCompatActivity {
     String word;
     String meaning;
     String explanation;
+    String wordtext;
 
     String text;
     String finalmeaning;
@@ -163,36 +164,49 @@ public class Dismiss extends AppCompatActivity {
 
         textView.setVisibility(View.VISIBLE);
         wordbar.setText(data);
+        wordtext=wordbar.getText().toString();
 
-
+       // find for sentence from html parser from yourdictionary.com
         textView2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(Dismiss.this,"running",Toast.LENGTH_SHORT).show();
-
                 word =wordbar.getText().toString();
 
-                GetSentence getSentence;
-                getSentence = new GetSentence();
-                getSentence.execute();
+                if (word.isEmpty())
+                {
+                    Toast.makeText(getApplicationContext(),"Please eneter your word",Toast.LENGTH_SHORT).show();
+
+                }
+                else
+                {
+                    GetSentence getSentence;
+                    getSentence = new GetSentence();
+                    getSentence.execute();
+                }
+
 
 
             }
         });
 
 
-       //  for find the meaning from dictionary.com
+       //  for find the meaning from dictionary.cambridge.com
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(Dismiss.this,"running",Toast.LENGTH_SHORT).show();
 
                 word =wordbar.getText().toString();
 
-                GetMeaning getMeaning;
-                getMeaning = new GetMeaning();
-                getMeaning.execute();
+                if(word.isEmpty())
+                {
+                    Toast.makeText(getApplicationContext(),"Please enter your word",Toast.LENGTH_SHORT).show();
 
+                }
+                else {
+                    GetMeaning getMeaning;
+                    getMeaning = new GetMeaning();
+                    getMeaning.execute();
+                }
 
             }
         });
@@ -221,6 +235,10 @@ public class Dismiss extends AppCompatActivity {
                             data.setExplanation(explanation);
                             data.setDate(new Date());
                             viewModel.insert(data);
+
+                            wordbar.setText("");
+                            meaningbar.setText("");
+                            explabar.setText("");
                             finish();
 
                         }
@@ -235,6 +253,9 @@ public class Dismiss extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
+                        wordbar.setText("");
+                        meaningbar.setText("");
+                        explabar.setText("");
                         finish();
                     }
                 });

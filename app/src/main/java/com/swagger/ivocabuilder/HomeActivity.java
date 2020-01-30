@@ -48,7 +48,6 @@ public class HomeActivity extends AppCompatActivity{
 
     String urlformeaning= "https://dictionary.cambridge.org/dictionary/english/";
     String urlend="?s=t";
-
     String urlforsentence="https://sentence.yourdictionary.com/";
 
 
@@ -56,6 +55,7 @@ public class HomeActivity extends AppCompatActivity{
     String word;
     String meaning;
     String explanation;
+    String wordtext;
 
     WordsViewModel viewModel;
 
@@ -122,44 +122,62 @@ public class HomeActivity extends AppCompatActivity{
         textView2=view.findViewById(R.id.seesentenceid);
 
 
-        wordbar.setText(text);
+
+        //wordbar.setText(text);
+
+        wordtext=wordbar.getText().toString();
 
         builder1.setView(view);
         builder1.setMessage("Enter Your Word.");
         builder1.setCancelable(true);
 
         //find for Sentence from html parser
-        textView2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"running",Toast.LENGTH_SHORT).show();
 
-                word =wordbar.getText().toString();
+            textView2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-                GetSentence getSentence;
-                getSentence = new GetSentence();
-                getSentence.execute();
+                    word =wordbar.getText().toString();
+
+                    if (word.isEmpty())
+                    {
+                        Toast.makeText(HomeActivity.this,"Please eneter your word",Toast.LENGTH_SHORT).show();
+
+                    }
+                    else
+                    {
+                        GetSentence getSentence;
+                        getSentence = new GetSentence();
+                        getSentence.execute();
+                    }
+
+                }
+            });
+
+            //find for meaning from html parser
+
+            textView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    word =wordbar.getText().toString();
+
+                    if(word.isEmpty())
+                    {
+                        Toast.makeText(HomeActivity.this,"Please enter your word",Toast.LENGTH_SHORT).show();
+
+                    }
+                    else {
+                        GetMeaning getMeaning;
+                        getMeaning = new GetMeaning();
+                        getMeaning.execute();
+                    }
+
+                    }
+
+            });
 
 
-            }
-        });
-
-        //find for meaning from html parser
-
-        textView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"running",Toast.LENGTH_SHORT).show();
-
-                word =wordbar.getText().toString();
-
-                GetMeaning getMeaning;
-                getMeaning = new GetMeaning();
-                getMeaning.execute();
-
-
-            }
-        });
 
 
         builder1.setPositiveButton(
@@ -183,6 +201,7 @@ public class HomeActivity extends AppCompatActivity{
                             data.setExplanation(explanation);
                             data.setDate(new Date());
                             viewModel.insert(data);
+                            finish();
                         }
                      }
                 });
@@ -193,6 +212,8 @@ public class HomeActivity extends AppCompatActivity{
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
+
+
                     }
                 });
 
@@ -207,7 +228,6 @@ public class HomeActivity extends AppCompatActivity{
         getMenuInflater().inflate(R.menu.main_menu, menu);
 
         return true;
-
 
     }
 
