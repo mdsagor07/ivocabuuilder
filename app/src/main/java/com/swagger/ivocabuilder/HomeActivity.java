@@ -4,7 +4,6 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -15,7 +14,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.ContextThemeWrapper;
@@ -33,8 +31,6 @@ import org.jsoup.nodes.Element;
 import java.io.IOException;
 import java.util.Date;
 
-import static java.lang.StrictMath.abs;
-
 
 public class HomeActivity extends AppCompatActivity{
 
@@ -42,15 +38,19 @@ public class HomeActivity extends AppCompatActivity{
    private CustomPagerAdaper customPagerAdaper;
    private TabLayout tabLayout;
    private WebView webView;
-   private TextView textView;
+   TextView textView;
+   TextView textView2;
    ProgressDialog progressDialog;
    String meaningFromsite;
    String text;
    String text2;
    String finalmeaning;
 
-    String url= "https://www.dictionary.com/browse/";
+    String urlformeaning= "https://dictionary.cambridge.org/dictionary/english/";
     String urlend="?s=t";
+
+    String urlforsentence="https://sentence.yourdictionary.com/";
+
 
    int id=1;
     String word;
@@ -119,6 +119,7 @@ public class HomeActivity extends AppCompatActivity{
         meaningbar = view.findViewById(R.id.meaning);
         explabar = view.findViewById(R.id.explanation);
         textView=view.findViewById(R.id.seemeningid);
+        textView2=view.findViewById(R.id.seesentenceid);
 
 
         wordbar.setText(text);
@@ -127,12 +128,28 @@ public class HomeActivity extends AppCompatActivity{
         builder1.setMessage("Enter Your Word.");
         builder1.setCancelable(true);
 
+        //find for Sentence from html parser
+        textView2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(),"running",Toast.LENGTH_SHORT).show();
+
+                word =wordbar.getText().toString();
+
+                GetSentence getSentence;
+                getSentence = new GetSentence();
+                getSentence.execute();
+
+
+            }
+        });
+
+        //find for meaning from html parser
+
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(),"running",Toast.LENGTH_SHORT).show();
-                //Intent intent=new Intent(getApplicationContext(), GoogleTranslate.class);
-                //startActivity(intent);
 
                 word =wordbar.getText().toString();
 
@@ -194,6 +211,79 @@ public class HomeActivity extends AppCompatActivity{
 
     }
 
+
+    private class GetSentence extends AsyncTask<Void,Void,Void>{
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog=new ProgressDialog(HomeActivity.this);
+            progressDialog.setTitle("Please wait");
+            progressDialog.setMessage("Find for sentence ");
+            progressDialog.show();
+
+        }
+
+
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            explabar.setText(finalmeaning);
+            progressDialog.dismiss();
+
+
+
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+
+            try {
+                Document document= (Document) Jsoup.connect(urlforsentence+ word).get();
+
+
+                Element lll=document.getElementsByClass("sentence component").first();
+
+                text=String.valueOf(lll.text()).trim();
+                int a=text.length();
+                finalmeaning=String.valueOf(lll.text()).trim().substring(0,a-1);
+
+
+/*
+
+                Element lll=document.getElementsByClass("one-click-content css-1p89gle e1q3nk1v4").first();
+                Element llll=document.getElementsByClass("luna-example italic").first();
+                //meaningFromsite=String.valueOf(lll.text()).trim();
+
+                text=String.valueOf(lll.text());
+                text2=String.valueOf(llll.text());
+
+                int a=text.length();
+                int b=text2.length();
+                int c=abs(a-b);
+                if(a>b)
+                {
+                    finalmeaning=String.valueOf(lll.text()).substring(0,c);
+                }
+*/
+
+
+
+
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+
+
+
+
     private class GetMeaning extends AsyncTask<Void,Void,Void>{
 
         @Override
@@ -219,21 +309,29 @@ public class HomeActivity extends AppCompatActivity{
 
         }
 
-        @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         protected Void doInBackground(Void... voids) {
 
             try {
-                Document document= (Document) Jsoup.connect(url+ word+urlend).get();
+                Document document= (Document) Jsoup.connect(urlformeaning+ word).get();
 
+
+
+                Element lll=document.getElementsByClass("def ddef_d db").first();
+
+                text=String.valueOf(lll.text()).trim();
+                int a=text.length();
+                finalmeaning=String.valueOf(lll.text()).trim().substring(0,a-1);
+
+
+/*
 
                 Element lll=document.getElementsByClass("one-click-content css-1p89gle e1q3nk1v4").first();
-
                 Element llll=document.getElementsByClass("luna-example italic").first();
                 //meaningFromsite=String.valueOf(lll.text()).trim();
 
-              text=String.valueOf(lll.text());
-               text2=String.valueOf(llll.text());
+                text=String.valueOf(lll.text());
+                text2=String.valueOf(llll.text());
 
                 int a=text.length();
                 int b=text2.length();
@@ -242,9 +340,10 @@ public class HomeActivity extends AppCompatActivity{
                 {
                     finalmeaning=String.valueOf(lll.text()).substring(0,c);
                 }
+*/
 
 
-                finalmeaning=String.valueOf(lll.text()).trim();
+                //finalmeaning=String.valueOf(lll.text()).trim();
 
 
 

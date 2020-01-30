@@ -1,7 +1,9 @@
 package com.swagger.ivocabuilder;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +18,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 import java.io.IOException;
 import java.util.Date;
@@ -29,6 +32,14 @@ public class Dismiss extends AppCompatActivity {
     String meaning;
     String explanation;
 
+    String text;
+    String finalmeaning;
+    String urlformeaning="https://dictionary.cambridge.org/dictionary/english/";
+
+    String urlforsentence="https://sentence.yourdictionary.com/";
+
+
+    ProgressDialog progressDialog;
     WordsViewModel viewModel;
 
     private EditText wordbar;
@@ -36,6 +47,7 @@ public class Dismiss extends AppCompatActivity {
     private EditText explabar;
 
     TextView textView;
+    TextView textView2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,15 +102,6 @@ public class Dismiss extends AppCompatActivity {
         builder1.setMessage("Enter Your Word.");
         builder1.setCancelable(true);
 
-        /*textView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"Hello Javatpoint",Toast.LENGTH_SHORT).show();
-                Intent intent=new Intent(getApplicationContext(), GoogleTranslate.class);
-
-                startActivity(intent);
-            }
-        });*/
 
         builder1.setPositiveButton(
                 "Yes",
@@ -156,32 +159,39 @@ public class Dismiss extends AppCompatActivity {
         meaningbar = view.findViewById(R.id.meaning);
         explabar = view.findViewById(R.id.explanation);
         textView=view.findViewById(R.id.seemeningid);
+        textView2=view.findViewById(R.id.seesentenceid);
 
         textView.setVisibility(View.VISIBLE);
         wordbar.setText(data);
+
+
+        textView2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(Dismiss.this,"running",Toast.LENGTH_SHORT).show();
+
+                word =wordbar.getText().toString();
+
+                GetSentence getSentence;
+                getSentence = new GetSentence();
+                getSentence.execute();
+
+
+            }
+        });
+
 
        //  for find the meaning from dictionary.com
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast.makeText(Dismiss.this,"running",Toast.LENGTH_SHORT).show();
 
-                Getmeaning();
-            }
+                word =wordbar.getText().toString();
 
-            private void Getmeaning() {
-                Document document=null;
-
-                try {
-                    document= Jsoup.connect("https://www.dictionary.com/browse/test?s=t").get();
-
-                    String html="<div value=\"1\" class=\"css-kg6o37 e1q3nk1v3\"><span class=\"one-click-content css-1p89gle e1q3nk1v4\">the means by which the presence, quality, or genuineness of anything is determined; a means of trial.</span></div>";
-                    Document doc = Jsoup.parse(html);
-
-
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                GetMeaning getMeaning;
+                getMeaning = new GetMeaning();
+                getMeaning.execute();
 
 
             }
@@ -234,6 +244,97 @@ public class Dismiss extends AppCompatActivity {
         alert11.show();
 
 
+    }
+
+    private class GetSentence extends AsyncTask<Void,Void,Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog=new ProgressDialog(Dismiss.this);
+            progressDialog.setTitle("Please wait");
+            progressDialog.setMessage("Find for sentence ");
+            progressDialog.show();
+
+        }
+
+
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            explabar.setText(finalmeaning);
+            progressDialog.dismiss();
+
+
+
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+
+            try {
+                Document document= (Document) Jsoup.connect(urlforsentence+ word).get();
+
+                Element lll=document.getElementsByClass("sentence component").first();
+
+                text=String.valueOf(lll.text()).trim();
+                int a=text.length();
+                finalmeaning=String.valueOf(lll.text()).trim().substring(0,a-1);
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+
+    private class GetMeaning extends AsyncTask<Void,Void,Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog=new ProgressDialog(Dismiss.this);
+            progressDialog.setTitle("Please wait");
+            progressDialog.setMessage("Find for meaning ");
+            progressDialog.show();
+
+        }
+
+
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            meaningbar.setText(finalmeaning);
+            progressDialog.dismiss();
+
+
+
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+
+            try {
+                Document document= (Document) Jsoup.connect(urlformeaning+ word).get();
+
+                Element lll=document.getElementsByClass("def ddef_d db").first();
+
+                text=String.valueOf(lll.text()).trim();
+                int a=text.length();
+                finalmeaning=String.valueOf(lll.text()).trim().substring(0,a-1);
+
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
     }
 }
 
