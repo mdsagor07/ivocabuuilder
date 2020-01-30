@@ -239,6 +239,7 @@ public class Dismiss extends AppCompatActivity {
                             wordbar.setText("");
                             meaningbar.setText("");
                             explabar.setText("");
+
                             finish();
 
                         }
