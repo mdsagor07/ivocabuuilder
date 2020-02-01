@@ -4,6 +4,7 @@ package com.swagger.ivocabuilder;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.OnConflictStrategy;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
@@ -12,15 +13,14 @@ import java.util.Date;
 @Entity(tableName = "wordsTable")
 public class Data {
 
-   @PrimaryKey(autoGenerate = true)
+    @PrimaryKey(autoGenerate = true)
     @NonNull
     @ColumnInfo(name = "id")
     private int id;
 
-
+    @OnConflictStrategy
     @ColumnInfo(name = "word")
     private String word;
-
 
     @ColumnInfo(name = "word_meaning")
     private  String meaning;

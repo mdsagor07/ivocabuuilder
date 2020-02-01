@@ -201,7 +201,10 @@ public class HomeActivity extends AppCompatActivity{
                             data.setExplanation(explanation);
                             data.setDate(new Date());
                             viewModel.insert(data);
-                            finish();
+                            wordbar.setText("");
+                            meaningbar.setText("");
+                            explabar.setText("");
+
                         }
                      }
                 });
@@ -211,6 +214,9 @@ public class HomeActivity extends AppCompatActivity{
                 "No",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                        wordbar.setText("");
+                        meaningbar.setText("");
+                        explabar.setText("");
                         dialog.cancel();
 
 
