@@ -3,10 +3,6 @@ package com.swagger.ivocabuilder;
 
 
 import android.content.Context;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
@@ -18,6 +14,10 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -62,7 +62,7 @@ public class TodayListAdapter extends RecyclerView.Adapter<TodayListAdapter.Word
 
     @Override
     public WordViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = mInflater.inflate(R.layout.error_solve, parent, false);
+        View itemView = mInflater.inflate(R.layout.recyclerview_items, parent, false);
         return new WordViewHolder(itemView);
     }
 
@@ -82,7 +82,7 @@ public class TodayListAdapter extends RecyclerView.Adapter<TodayListAdapter.Word
             if (date.equals(currentDateTimeString)) {
 
                 holder.itemView.setVisibility(View.VISIBLE);
-                holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                //holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
 
                 word = current.getWord();
@@ -141,7 +141,7 @@ public class TodayListAdapter extends RecyclerView.Adapter<TodayListAdapter.Word
             else {
 
                 holder.itemView.setVisibility(View.GONE);
-                holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
+                //holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
 
 
             }

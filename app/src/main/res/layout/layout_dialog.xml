@@ -1,19 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:gravity="center"
+    android:layout_margin="10dp"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:layout_width="260dp"
+        android:layout_height="wrap_content"
+        android:text="Enter Your Word."
+        android:textColor="@android:color/black"
+        android:textSize="16sp"/>
+
 
     <EditText
         android:id="@+id/word"
-        android:layout_width="230dp"
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp"
-        android:textIsSelectable="true"
-        android:layout_height="38dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="1dp"
-        android:background="@drawable/word"
-        android:hint="Word" />
+        android:layout_width ="260dp"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/word_bg"
+        android:hint="Word"
+        android:textSize="16sp"
+        android:textColor="@android:color/black"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -47,24 +58,26 @@
 
     <EditText
         android:id="@+id/meaning"
-        android:layout_width="230dp"
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp"
-        android:layout_marginTop="12dp"
-        android:layout_height="38dp"
-        android:layout_gravity="center"
-        android:background="@drawable/meaning"
-        android:hint="Meaning" />
+        android:layout_width="260dp"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        android:layout_height="40dp"
+        android:background="@drawable/word_bg"
+        android:hint="Meaning"
+        android:textSize="16sp"
+        android:textColor="@android:color/black"/>
 
     <EditText
         android:id="@+id/explanation"
-        android:layout_width="230dp"
-        android:layout_height="130dp"
-        android:layout_gravity="center"
+        android:layout_width="260dp"
+        android:layout_height="110dp"
+        android:gravity="start|top"
         android:layout_marginTop="15dp"
-        android:background="@drawable/explanation"
+        android:background="@drawable/word_bg"
         android:hint="Example Here"
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp" />
+        android:paddingStart="15dp"
+        android:paddingTop="10dp"
+        android:paddingEnd="15dp"
+        android:paddingBottom="10dp"/>
 
 </LinearLayout>

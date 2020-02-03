@@ -2,22 +2,7 @@ package com.swagger.ivocabuilder;
 
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.SearchView;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,9 +10,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.appcompat.widget.SearchView;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
@@ -57,11 +46,10 @@ public class DayFragment extends Fragment implements TodayListAdapter.OnDeleteCl
 
         View view = inflater.inflate(R.layout.fragment_day, container, false);
 
-         recyclerView = view.findViewById(R.id.recyclerview);
-         adapter = new TodayListAdapter(getActivity(),this);
-         recyclerView.setAdapter(adapter);
-         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
+        recyclerView = view.findViewById(R.id.recyclerview);
+        adapter = new TodayListAdapter(getActivity(), this);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setAdapter(adapter);
 
 
         // Get a new or existing ViewModel from the ViewModelProvider.
@@ -79,7 +67,19 @@ public class DayFragment extends Fragment implements TodayListAdapter.OnDeleteCl
 
     }
 
-    public  void loadSearchedItems(String query) {
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.graph) {
+            Intent intent = new Intent(getContext(), LineChartActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        return false;
+    }
+
+    public void loadSearchedItems(String query) {
         adapter.getFilter().filter(query);
     }
 
@@ -88,6 +88,9 @@ public class DayFragment extends Fragment implements TodayListAdapter.OnDeleteCl
         // Do something that differs the Activity's menu here
         inflater.inflate(R.menu.main_menu, menu);
         MenuItem searchItem = menu.findItem(R.id.all_users);
+        MenuItem graphItem = menu.findItem(R.id.graph);
+
+
         SearchView searchView = (SearchView) searchItem.getActionView();
 
         searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
@@ -107,8 +110,6 @@ public class DayFragment extends Fragment implements TodayListAdapter.OnDeleteCl
 
         super.onCreateOptionsMenu(menu, inflater);
     }
-
-
 
 
     @Override

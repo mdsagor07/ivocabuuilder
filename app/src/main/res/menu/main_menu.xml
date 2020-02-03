@@ -7,13 +7,13 @@
         android:icon="@drawable/graph_diagram"
         android:title="Graph"
         app:popupTheme="@style/AppTheme.PopupOverlay"
-        app:showAsAction="ifRoom|collapseActionView"
-        />
+        app:showAsAction="ifRoom|collapseActionView" />
 
     <item
         android:id="@+id/all_users"
         android:icon="@drawable/ic_magnifying_glass"
-        app:showAsAction="ifRoom|collapseActionView"
+        android:title="Search"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:popupTheme="@style/AppTheme.PopupOverlay"
-    app:actionViewClass="androidx.appcompat.widget.SearchView"  />
+        app:showAsAction="ifRoom|collapseActionView" />
 </menu>

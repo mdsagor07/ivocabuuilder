@@ -87,7 +87,7 @@ public class Dismiss extends AppCompatActivity {
         View view = inflater.inflate(R.layout.layout_dialog, null);
 
 
-        builder1.setTitle("Enter Word:");
+
         wordbar = view.findViewById(R.id.word);
         meaningbar = view.findViewById(R.id.meaning);
         explabar = view.findViewById(R.id.explanation);
@@ -100,7 +100,6 @@ public class Dismiss extends AppCompatActivity {
         explabar.setText(data);
 
         builder1.setView(view);
-        builder1.setMessage("Enter Your Word.");
         builder1.setCancelable(true);
 
 
@@ -109,9 +108,9 @@ public class Dismiss extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
 
-                        word = wordbar.getText().toString();
-                        meaning = meaningbar.getText().toString();
-                        explanation = explabar.getText().toString();
+                        word = wordbar.getText().toString().toLowerCase().trim();
+                        meaning = meaningbar.getText().toString().toLowerCase().trim();
+                        explanation = explabar.getText().toString().toLowerCase().trim();
 
                         if (word.equals("") && meaning.equals("")) {
                             Toast.makeText(getApplicationContext(), "Fields Are Empty", Toast.LENGTH_SHORT).show();
@@ -155,7 +154,6 @@ public class Dismiss extends AppCompatActivity {
 
 
 
-        builder1.setTitle("Enter Word:");
         wordbar = view.findViewById(R.id.word);
         meaningbar = view.findViewById(R.id.meaning);
         explabar = view.findViewById(R.id.explanation);
@@ -164,13 +162,13 @@ public class Dismiss extends AppCompatActivity {
 
         textView.setVisibility(View.VISIBLE);
         wordbar.setText(data);
-        wordtext=wordbar.getText().toString();
+        wordtext=wordbar.getText().toString().toLowerCase().trim();
 
        // find for sentence from html parser from yourdictionary.com
         textView2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                word =wordbar.getText().toString();
+                word =wordbar.getText().toString().toLowerCase().trim();
 
                 if (word.isEmpty())
                 {
@@ -195,7 +193,7 @@ public class Dismiss extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                word =wordbar.getText().toString();
+                word =wordbar.getText().toString().toLowerCase().trim();
 
                 if(word.isEmpty())
                 {
@@ -214,7 +212,6 @@ public class Dismiss extends AppCompatActivity {
         //wordbar.setText(data);
 
         builder1.setView(view);
-        builder1.setMessage("Enter Your Word.");
         builder1.setCancelable(true);
 
         builder1.setPositiveButton(
@@ -222,9 +219,9 @@ public class Dismiss extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
 
-                        word = wordbar.getText().toString();
-                        meaning = meaningbar.getText().toString();
-                        explanation = explabar.getText().toString();
+                        word = wordbar.getText().toString().toLowerCase().trim();
+                        meaning = meaningbar.getText().toString().toLowerCase().trim();
+                        explanation = explabar.getText().toString().toLowerCase().trim();
 
                         if (word.equals("") && meaning.equals("")) {
                             Toast.makeText(getApplicationContext(), "Fields Are Empty", Toast.LENGTH_SHORT).show();

@@ -1,20 +1,21 @@
 package com.swagger.ivocabuilder;
 
 
-import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Index;
 import androidx.room.OnConflictStrategy;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 import java.util.Date;
 
-@Entity(tableName = "wordsTable")
+
+@Entity(tableName = "wordsTable" , indices = {@Index(value = {"word"},
+        unique = true)})
 public class Data {
 
     @PrimaryKey(autoGenerate = true)
-    @NonNull
     @ColumnInfo(name = "id")
     private int id;
 

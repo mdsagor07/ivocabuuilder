@@ -1,16 +1,16 @@
 package com.swagger.ivocabuilder;
 
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 
 import java.util.Date;
 
@@ -73,10 +73,9 @@ public class EditActivity extends AppCompatActivity {
     }
 
     public void update(){
-        String wordText = word.getText().toString();
-        String meaningText = meaning.getText().toString();
-        String explanation_text = explanation.getText().toString();
-
+        String wordText = word.getText().toString().toLowerCase().trim();
+        String meaningText = meaning.getText().toString().trim();
+        String explanation_text = explanation.getText().toString().trim();
 
         Data data = new Data();
         data.setId(id);
