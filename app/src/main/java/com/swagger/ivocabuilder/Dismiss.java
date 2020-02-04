@@ -116,6 +116,7 @@ public class Dismiss extends AppCompatActivity {
                         if (word.equals("") && meaning.equals("")) {
                             Toast.makeText(getApplicationContext(), "Fields Are Empty", Toast.LENGTH_SHORT).show();
                         }  else {
+
                             Data data = new Data();
                             data.setWord(word);
                             data.setMeaning(meaning);
@@ -179,6 +180,8 @@ public class Dismiss extends AppCompatActivity {
                 }
                 else
                 {
+                    Toast.makeText(Dismiss.this,"Please ensure your connection",Toast.LENGTH_SHORT).show();
+
                     GetSentence getSentence;
                     getSentence = new GetSentence();
                     getSentence.execute();
@@ -203,6 +206,8 @@ public class Dismiss extends AppCompatActivity {
 
                 }
                 else {
+                    Toast.makeText(Dismiss.this,"Please ensure your connection",Toast.LENGTH_SHORT).show();
+
                     GetMeaning getMeaning;
                     getMeaning = new GetMeaning();
                     getMeaning.execute();

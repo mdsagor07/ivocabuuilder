@@ -4,7 +4,6 @@ package com.swagger.ivocabuilder;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
-import androidx.room.OnConflictStrategy;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
@@ -18,7 +17,6 @@ public class Data {
     @ColumnInfo(name = "id")
     private int id;
 
-    @OnConflictStrategy
     @ColumnInfo(name = "word")
     private String word;
 

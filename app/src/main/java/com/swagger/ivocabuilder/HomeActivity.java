@@ -44,6 +44,8 @@ public class HomeActivity extends AppCompatActivity{
    String meaningFromsite;
    String text;
    String text2;
+   String text3;
+   String text4;
    String finalmeaning;
 
     String urlformeaning= "https://dictionary.cambridge.org/dictionary/english/";
@@ -168,6 +170,8 @@ public class HomeActivity extends AppCompatActivity{
 
                     }
                     else {
+
+                        Toast.makeText(HomeActivity.this,"Please ensure your connection",Toast.LENGTH_SHORT).show();
                         GetMeaning getMeaning;
                         getMeaning = new GetMeaning();
                         getMeaning.execute();
@@ -256,7 +260,7 @@ public class HomeActivity extends AppCompatActivity{
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
 
-            explabar.setText(finalmeaning);
+            explabar.setText(text);
             progressDialog.dismiss();
 
 
@@ -269,11 +273,50 @@ public class HomeActivity extends AppCompatActivity{
             try {
                 Document document= (Document) Jsoup.connect(urlforsentence+ word).get();
 
-                Element lll=document.getElementsByClass("sentence component").first();
+               // Element lll=document.getElementsByClass("sentence component").first();
+                Element lll=document.getElementsByClass("sentence-list").first();
 
-                text=String.valueOf(lll.text()).trim();
+                text=String.valueOf(lll.text().trim());
                 int a=text.length();
-                finalmeaning=String.valueOf(lll.text()).trim().substring(0,a-1);
+                //finalmeaning=String.valueOf(lll.text()).trim().substring(0,a-1);
+
+               String str="";
+
+
+
+//
+//               // string s = "my name is Rana.1245my name is Rana.1245my name is Rana.1245my name is Rana.1245my name is Rana.1245";
+//
+//                for(int i=0;i< text2.length(); i++)
+//                {
+//                    if(text2.contains("."))
+//                    {
+//
+//                        text3="\n";
+//
+//                    }
+//
+//                    else if(text2.contains("0") || text2.contains("1") || text2.contains("2") || text2.contains("3")
+//                    ||text2.contains("4") || text2.contains("5") || text2.contains("6") || text2.contains("7")
+//                    ||text2.contains("8") || text2.contains("9"))
+//
+//                    {
+//                        continue;
+//
+//                    }
+//
+//                    else
+//                    {
+//
+//                        StringBuilder builder = new StringBuilder();
+//
+//
+//                    }
+//
+//                }
+
+
+
 
 
 /*
@@ -290,7 +333,7 @@ public class HomeActivity extends AppCompatActivity{
                 int c=abs(a-b);
                 if(a>b)
                 {
-                    finalmeaning=String.valueOf(lll.text()).substring(0,c);
+                    finalmeaning=String.valueOf(lll.te                  xt()).substring(0,c);
                 }
 */
 
@@ -322,7 +365,6 @@ public class HomeActivity extends AppCompatActivity{
         }
 
 
-
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
@@ -339,8 +381,6 @@ public class HomeActivity extends AppCompatActivity{
 
             try {
                 Document document= (Document) Jsoup.connect(urlformeaning+ word).get();
-
-
 
                 Element lll=document.getElementsByClass("def ddef_d db").first();
 
