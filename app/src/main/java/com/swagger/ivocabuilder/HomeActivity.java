@@ -217,7 +217,7 @@ public class HomeActivity extends AppCompatActivity {
             super.onPreExecute();
             progressDialog = new ProgressDialog(HomeActivity.this);
             progressDialog.setTitle("Please wait");
-            progressDialog.setMessage("Find for sentence ");
+            progressDialog.setMessage("finding sentence ");
             progressDialog.show();
 
         }
@@ -280,7 +280,7 @@ public class HomeActivity extends AppCompatActivity {
             super.onPreExecute();
             progressDialog = new ProgressDialog(HomeActivity.this);
             progressDialog.setTitle("Please wait");
-            progressDialog.setMessage("Find for meaning ");
+            progressDialog.setMessage("finding meaning ");
             progressDialog.show();
 
         }
@@ -360,4 +360,5 @@ public class HomeActivity extends AppCompatActivity {
         }
         return true;
     }*/
+
 }
