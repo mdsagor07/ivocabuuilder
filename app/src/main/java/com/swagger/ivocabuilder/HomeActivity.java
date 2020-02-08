@@ -2,9 +2,12 @@ package com.swagger.ivocabuilder;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.EditText;
@@ -29,38 +32,39 @@ import java.io.IOException;
 import java.util.Date;
 
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity{
 
-    private ViewPager viewPager;
-    private CustomPagerAdaper customPagerAdaper;
-    private TabLayout tabLayout;
-    private WebView webView;
-    TextView textView;
-    TextView textView2;
-    ProgressDialog progressDialog;
-    String meaningFromsite;
-    String text;
-    String text2;
-    String finalmeaning;
+   private ViewPager viewPager ;
+   private CustomPagerAdaper customPagerAdaper;
+   private TabLayout tabLayout;
+   private WebView webView;
+   TextView textView;
+   TextView textView2;
+   ProgressDialog progressDialog;
+   String meaningFromsite;
+   String text;
+   String text2;
+   String finalmeaning;
 
-    String urlformeaning = "https://dictionary.cambridge.org/dictionary/english/";
-    String urlforsentence = "https://sentence.yourdictionary.com/";
+    String urlformeaning= "https://dictionary.cambridge.org/dictionary/english/";
+    String urlend="?s=t";
+    String urlforsentence="https://sentence.yourdictionary.com/";
 
 
-    int id = 1;
+   int id=1;
     String word;
     String meaning;
     String explanation;
+    String wordtext;
 
     WordsViewModel viewModel;
 
     private EditText wordbar;
     private EditText meaningbar;
     private EditText explabar;
+    private int currentpage;
 
-    public HomeActivity() {
-    }
-
+    private WordsViewModel mWordViewModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,6 +79,7 @@ public class HomeActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("iVocabuilder");
 
 
+
         viewPager = findViewById(R.id.view_pager);
         tabLayout = findViewById(R.id.tab_layout);
 
@@ -84,82 +89,95 @@ public class HomeActivity extends AppCompatActivity {
 
         viewModel = ViewModelProviders.of(this).get(WordsViewModel.class);
 
-        String data = getIntent().getStringExtra("copiedLink");
-        if (data != null && !data.isEmpty()) {
-            openDialog();
-        }
+           String data = getIntent().getStringExtra("copiedLink");
+           if(data != null && !data.isEmpty()){
+               openDialog(data);
+           }
 
 
         FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openDialog();
-            }
-        });
+       fab.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+               openDialog("");
+           }
+       });
 
     }
 
-
-    private void openDialog() {
+    private void openDialog(String text) {
 
         AlertDialog.Builder builder1 = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AlertDialogCustom));
 
         LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
         View view = inflater.inflate(R.layout.layout_dialog, null);
 
+
+
+        builder1.setTitle("Enter Word:");
         wordbar = view.findViewById(R.id.word);
         meaningbar = view.findViewById(R.id.meaning);
         explabar = view.findViewById(R.id.explanation);
-        textView = view.findViewById(R.id.seemeningid);
-        textView2 = view.findViewById(R.id.seesentenceid);
+        textView=view.findViewById(R.id.seemeningid);
+        textView2=view.findViewById(R.id.seesentenceid);
+
 
 
         //wordbar.setText(text);
 
+
+
         builder1.setView(view);
+        builder1.setMessage("Enter Your Word.");
         builder1.setCancelable(true);
 
         //find for Sentence from html parser
 
-        textView2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            textView2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-                word = wordbar.getText().toString().toLowerCase().trim();
+                    word =wordbar.getText().toString();
 
-                if (word.isEmpty()) {
-                    Toast.makeText(HomeActivity.this, "Please eneter your word", Toast.LENGTH_SHORT).show();
+                    if (word.isEmpty())
+                    {
+                        Toast.makeText(HomeActivity.this,"Please eneter your word",Toast.LENGTH_SHORT).show();
 
-                } else {
-                    GetSentence getSentence;
-                    getSentence = new GetSentence();
-                    getSentence.execute();
+                    }
+                    else
+                    {
+                        GetSentence getSentence;
+                        getSentence = new GetSentence();
+                        getSentence.execute();
+                    }
+
                 }
+            });
 
-            }
-        });
+            //find for meaning from html parser
 
-        //find for meaning from html parser
+            textView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-        textView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                    word =wordbar.getText().toString();
 
-                word = wordbar.getText().toString().toLowerCase().trim();
+                    if(word.isEmpty())
+                    {
+                        Toast.makeText(HomeActivity.this,"Please enter your word",Toast.LENGTH_SHORT).show();
 
-                if (word.isEmpty()) {
-                    Toast.makeText(HomeActivity.this, "Please enter your word", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        GetMeaning getMeaning;
+                        getMeaning = new GetMeaning();
+                        getMeaning.execute();
+                    }
 
-                } else {
-                    GetMeaning getMeaning;
-                    getMeaning = new GetMeaning();
-                    getMeaning.execute();
-                }
+                    }
 
-            }
+            });
 
-        });
+
 
 
         builder1.setPositiveButton(
@@ -167,14 +185,15 @@ public class HomeActivity extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
 
-                        word = wordbar.getText().toString().toLowerCase().trim();
-                        meaning = meaningbar.getText().toString().toLowerCase().trim();
-                        explanation = explabar.getText().toString().toLowerCase().trim();
+                        word = wordbar.getText().toString();
+                        meaning = meaningbar.getText().toString();
+                        explanation = explabar.getText().toString();
 
 
-                        if (word.equals("") && meaning.equals("")) {
+                        if (word.equals("") && meaning.equals("")){
                             Toast.makeText(HomeActivity.this, "Fields Are Empty", Toast.LENGTH_SHORT).show();
-                        } else {
+                        }
+                        else {
 
                             Data data = new Data();
                             data.setWord(word);
@@ -187,7 +206,7 @@ public class HomeActivity extends AppCompatActivity {
                             explabar.setText("");
 
                         }
-                    }
+                     }
                 });
 
 
@@ -209,18 +228,28 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.main_menu, menu);
 
-    private class GetSentence extends AsyncTask<Void, Void, Void> {
+        return true;
+
+    }
+
+
+    private class GetSentence extends AsyncTask<Void,Void,Void>{
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progressDialog = new ProgressDialog(HomeActivity.this);
+            progressDialog=new ProgressDialog(HomeActivity.this);
             progressDialog.setTitle("Please wait");
-            progressDialog.setMessage("finding sentence ");
+            progressDialog.setMessage("Find for sentence ");
             progressDialog.show();
 
         }
+
 
 
         @Override
@@ -231,19 +260,20 @@ public class HomeActivity extends AppCompatActivity {
             progressDialog.dismiss();
 
 
+
         }
 
         @Override
         protected Void doInBackground(Void... voids) {
 
             try {
-                Document document = Jsoup.connect(urlforsentence + word).get();
+                Document document= (Document) Jsoup.connect(urlforsentence+ word).get();
 
-                Element lll = document.getElementsByClass("sentence component").first();
+                Element lll=document.getElementsByClass("sentence component").first();
 
-                text = String.valueOf(lll.text()).trim();
-                int a = text.length();
-                finalmeaning = String.valueOf(lll.text()).trim().substring(0, a - 1);
+                text=String.valueOf(lll.text()).trim();
+                int a=text.length();
+                finalmeaning=String.valueOf(lll.text()).trim().substring(0,a-1);
 
 
 /*
@@ -265,6 +295,10 @@ public class HomeActivity extends AppCompatActivity {
 */
 
 
+
+
+
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -273,17 +307,20 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
-    private class GetMeaning extends AsyncTask<Void, Void, Void> {
+
+
+    private class GetMeaning extends AsyncTask<Void,Void,Void>{
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progressDialog = new ProgressDialog(HomeActivity.this);
+            progressDialog=new ProgressDialog(HomeActivity.this);
             progressDialog.setTitle("Please wait");
-            progressDialog.setMessage("finding meaning ");
+            progressDialog.setMessage("Find for meaning ");
             progressDialog.show();
 
         }
+
 
 
         @Override
@@ -294,20 +331,22 @@ public class HomeActivity extends AppCompatActivity {
             progressDialog.dismiss();
 
 
+
         }
 
         @Override
         protected Void doInBackground(Void... voids) {
 
             try {
-                Document document = Jsoup.connect(urlformeaning + word).get();
+                Document document= (Document) Jsoup.connect(urlformeaning+ word).get();
 
 
-                Element lll = document.getElementsByClass("def ddef_d db").first();
 
-                text = String.valueOf(lll.text()).trim();
-                int a = text.length();
-                finalmeaning = String.valueOf(lll.text()).trim().substring(0, a - 1);
+                Element lll=document.getElementsByClass("def ddef_d db").first();
+
+                text=String.valueOf(lll.text()).trim();
+                int a=text.length();
+                finalmeaning=String.valueOf(lll.text()).trim().substring(0,a-1);
 
 
 /*
@@ -332,6 +371,8 @@ public class HomeActivity extends AppCompatActivity {
                 //finalmeaning=String.valueOf(lll.text()).trim();
 
 
+
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -340,25 +381,22 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
-   /* @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.main_menu, menu);
-        return true;
-    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
         if (item.getItemId() == R.id.all_users) {
 
+
+
         }
         if (item.getItemId() == R.id.graph) {
-            Intent intent = new Intent(getApplicationContext(), LineChartActivity.class);
+            Intent intent = new Intent(getApplicationContext(),LineChartActivity.class);
             startActivity(intent);
 
         }
-        return true;
-    }*/
 
+        return true;
+    }
 }
